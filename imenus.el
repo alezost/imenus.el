@@ -254,6 +254,7 @@ If RESCAN is non-nil, rescan imenu items."
 This function is almost the same as `imenu--completion-buffer'.
 The main difference is it returns a user input string (not nil)
 if this string does not match any item."
+  (setq imenus-exit-status nil)
   (let* ((index (imenus-prepare-index index))
          (name (thing-at-point 'symbol))
          (name (and (stringp name)
@@ -267,17 +268,19 @@ if this string does not match any item."
     (or imenu-eager-completion-buffer
         (add-hook 'minibuffer-setup-hook 'minibuffer-completion-help))
     (add-hook 'minibuffer-setup-hook 'imenus-minibuffer-setup)
-    (let ((input (completing-read prompt index
-                                  nil nil initial-input
-                                  'imenu--history-list name)))
-      (or (assoc input index) input))))
+    (let* ((input (completing-read prompt index
+                                   nil nil initial-input
+                                   'imenu--history-list name))
+           (item (assoc input index)))
+      (if (or imenus-exit-status (null item))
+          input
+        item))))
 
 (defun imenus-buffers (buffers &optional rescan prompt initial-input)
   "Prompt for a place from a list of BUFFERS and jump to it.
 If a user input does not match any item, start Isearch-ing of the
 current input.
 Interactively, use the current buffer."
-  (setq imenus-exit-status nil)
   (let* ((index (imenus-buffers-index buffers rescan))
          (input (imenus-completing-read index prompt initial-input)))
     (cond ((or (eq imenus-exit-status 'rescan)
