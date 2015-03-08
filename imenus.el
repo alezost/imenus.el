@@ -6,7 +6,6 @@
 ;; Created: 19 Dec 2014
 ;; Version: 0.1
 ;; Package-Requires: ((cl-lib "0.5"))
-;; URL: https://gitorious.org/alezost-emacs/imenus
 ;; URL: https://github.com/alezost/imenus.el
 ;; Keywords: tools convenience
 
