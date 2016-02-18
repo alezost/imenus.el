@@ -286,7 +286,7 @@ Interactively, use the current buffer."
     (cond ((or (eq imenus-exit-status 'rescan)
                (equal input imenu--rescan-item))
            (imenu--cleanup index)
-           (imenus-buffers buffers 'rescan prompt input))
+           (imenus-buffers buffers 'rescan prompt initial-input))
           (imenus-exit-status
            (let ((fun (cdr (assq imenus-exit-status imenus-actions))))
              (and fun (funcall fun buffers input))))
