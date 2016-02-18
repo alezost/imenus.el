@@ -1,6 +1,6 @@
 ;;; imenus.el --- Imenu for multiple buffers
 
-;; Copyright © 2014-2015 Alex Kost
+;; Copyright © 2014-2016 Alex Kost
 
 ;; Author: Alex Kost <alezost@gmail.com>
 ;; Created: 19 Dec 2014
@@ -181,10 +181,11 @@ Make this command return the current user input."
   "Convert imenu INDEX into imenus index."
   (let (simple subsections)
     (mapc (lambda (item)
-            (if (imenu--subalist-p item)
-                (push item subsections)
-              (push (imenus-rename-item item nil buffer)
-                    simple)))
+            (when item
+              (if (imenu--subalist-p item)
+                  (push item subsections)
+                (push (imenus-rename-item item nil buffer)
+                      simple))))
           index)
     (nconc simple
            (cl-mapcan (lambda (section)
