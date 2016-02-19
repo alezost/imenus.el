@@ -113,6 +113,13 @@ POSITION is the buffer position of the item.  To go to the item
 is to switch to the buffer and to move point to that position.
 POSITION is passed to `imenus-goto'.")
 
+(cl-defstruct (imenus-position
+               (:constructor nil)
+               (:constructor imenus-make-position
+                             (buffer imenu-position))
+               (:copier nil))
+  buffer imenu-position)
+
 (defun imenus-minibuffer-setup ()
   "Prepare minibuffer for imenus needs."
   (use-local-map
@@ -164,10 +171,11 @@ Make this command return the current user input."
              #'imenus-item-name-default)
            item-name section buffer))
 
-(defun imenus-rename-item (item section buffer)
-  "Rename an imenu ITEM into an imenus item."
+(defun imenus-imenu-item-to-imenus-item (item section buffer)
+  "Convert imenu index ITEM into imenus index item.
+Change its name and transform imenu position into imenus position."
   (cons (imenus-item-name (car item) section buffer)
-        (cdr item)))
+        (imenus-make-position buffer (cdr item))))
 
 (defun imenus-imenu-index-to-imenus-index (index buffer &optional section)
   "Convert imenu INDEX into imenus index."
@@ -181,7 +189,8 @@ Make this command return the current user input."
                         (if section
                             (concat section imenus-delimiter name)
                           name)))
-                   (list (imenus-rename-item item section buffer)))))
+                   (list (imenus-imenu-item-to-imenus-item
+                          item section buffer)))))
              index))
 
 (defun imenus-sort-index-maybe (index)
@@ -221,14 +230,24 @@ If RESCAN is non-nil, rescan imenu items."
     (cons imenu--rescan-item
           (imenus-sort-index-maybe index))))
 
-(defun imenus-goto (name position &rest rest)
-  "Like `imenu-default-goto-function' but can move to any buffer."
-  (let ((buf (marker-buffer position)))
-    (pop-to-buffer buf
+(defun imenus-goto (item)
+  "Go to imenus ITEM."
+  (let* ((name       (car item))
+         (imenus-pos (cdr item))
+         (buffer     (imenus-position-buffer imenus-pos))
+         (imenu-pos  (imenus-position-imenu-position imenus-pos)))
+    (pop-to-buffer buffer
                    '((display-buffer-reuse-window
                       display-buffer-same-window)))
-    (apply #'imenu-default-goto-function
-           name position rest)))
+    (push-mark nil t)
+    ;; Imenu item can have 2 forms.  See `imenu' and the docstring of
+    ;; `imenu--index-alist'.
+    (pcase imenu-pos
+      (`(,position ,function . ,args)
+       (apply function name position args))
+      (position
+       (funcall imenu-default-goto-function nil position)))
+    (run-hooks 'imenu-after-jump-hook)))
 
 (defun imenus-prepare-index (index)
   "Replace space with `imenu-space-replacement' in INDEX items."
@@ -285,8 +304,7 @@ Interactively, use the current buffer."
            (let ((fun (cdr (assq imenus-exit-status imenus-actions))))
              (and fun (funcall fun buffers input))))
           ((consp input)
-           (let ((imenu-default-goto-function #'imenus-goto))
-             (imenu input))))))
+           (imenus-goto input)))))
 
 (defun imenus-files (files &optional rescan prompt initial-input)
   "Perform `imenus' on FILES."
