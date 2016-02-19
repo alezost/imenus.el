@@ -169,28 +169,20 @@ Make this command return the current user input."
   (cons (imenus-item-name (car item) section buffer)
         (cdr item)))
 
-(defun imenus-subsection-items (subsection buffer)
-  "Convert imenu SUBSECTION item into alist of items."
-  (let ((name  (car subsection))
-        (items (cdr subsection)))
-    (mapcar (lambda (item)
-              (imenus-rename-item item name buffer))
-            items)))
-
-(defun imenus-imenu-index-to-imenus-index (index buffer)
+(defun imenus-imenu-index-to-imenus-index (index buffer &optional section)
   "Convert imenu INDEX into imenus index."
-  (let (simple subsections)
-    (mapc (lambda (item)
-            (when item
-              (if (imenu--subalist-p item)
-                  (push item subsections)
-                (push (imenus-rename-item item nil buffer)
-                      simple))))
-          index)
-    (nconc simple
-           (cl-mapcan (lambda (section)
-                        (imenus-subsection-items section buffer))
-                      subsections))))
+  (cl-mapcan (lambda (item)
+               (when item
+                 (if (imenu--subalist-p item)
+                     (let ((name     (car item))
+                           (subindex (cdr item)))
+                       (imenus-imenu-index-to-imenus-index
+                        subindex buffer
+                        (if section
+                            (concat section imenus-delimiter name)
+                          name)))
+                   (list (imenus-rename-item item section buffer)))))
+             index))
 
 (defun imenus-sort-index-maybe (index)
   "Sort INDEX depending on `imenus-sort-function'."
