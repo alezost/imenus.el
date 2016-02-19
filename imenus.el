@@ -1,10 +1,10 @@
-;;; imenus.el --- Imenu for multiple buffers
+;;; imenus.el --- Imenu for multiple buffers and without subgroups
 
 ;; Copyright © 2014-2016 Alex Kost
 
 ;; Author: Alex Kost <alezost@gmail.com>
 ;; Created: 19 Dec 2014
-;; Version: 0.1
+;; Version: 0.2
 ;; Package-Requires: ((cl-lib "0.5"))
 ;; URL: https://github.com/alezost/imenus.el
 ;; Keywords: tools convenience
