@@ -59,5 +59,5 @@ For the manual installation, clone the repo, add the directory to
 
   This is not an interactive command; it is a function that may be used
   to perform =imenus= on files.  For example, I use it to search my
-  elisp files (see [[https://github.com/alezost/emacs-utils/blob/master/utl-imenus.el][utl-imenus.el]]).
+  elisp files (see [[https://github.com/alezost/emacs-config/blob/master/utils/al-imenus.el][al-imenus.el]]).
 
