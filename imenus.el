@@ -275,8 +275,10 @@ current input.
 Interactively, use the current buffer."
   (let* ((index (imenus-buffers-index buffers rescan))
          (input (imenus-completing-read index prompt initial-input)))
-    (cond ((or (eq imenus-exit-status 'rescan)
-               (equal input imenu--rescan-item))
+    (cond ((eq imenus-exit-status 'rescan)
+           (imenu--cleanup index)
+           (imenus-buffers buffers 'rescan prompt input))
+          ((equal input imenu--rescan-item)
            (imenu--cleanup index)
            (imenus-buffers buffers 'rescan prompt initial-input))
           (imenus-exit-status
