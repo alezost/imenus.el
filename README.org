@@ -5,7 +5,7 @@
 ** About
 
 This Emacs package provides a way to use =imenu= indexes on multiple
-buffers (or files).
+buffers (or files) and without subsections.
 
 Above that, =imenus= may be used to perform =isearch= or =occur= on
 specified buffers by pressing an according key binding.
@@ -46,9 +46,14 @@ For the manual installation, clone the repo, add the directory to
     * =M-s= - Start Isearch with the current input string.
     * =M-o= - Start Occur with the current input string.
 
-  + There are no additional groups, like "Variables" or "Types".  All
-    items are placed in the top level and optionally have a group prefix
-    (i.e., "Variables ⇨ imenus-delimiter").
+  + There are no additional groups (sections), like "Variables" or
+    "Types".  All items are placed in the top level and optionally have
+    a group prefix (i.e., "Variables ⇨ imenus-delimiter").  The
+    difference is shown in the following screenshots:
+
+    | Imenu                               | Imenus                              |
+    |-------------------------------------+-------------------------------------|
+    | [[http://i.imgur.com/mVG7uOI.png][file:http://i.imgur.com/mVG7uOI.png]] | [[http://i.imgur.com/3fAZetY.png][file:http://i.imgur.com/3fAZetY.png]] |
 
 - =M-x imenus-mode-buffers=
 
