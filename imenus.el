@@ -13,12 +13,12 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -81,6 +81,10 @@ subsection name and a buffer where the item come from."
   "String used to separate parts of an index item name."
   :type 'string
   :group 'imenus)
+
+(defvar imenus-completing-read-function completing-read-function
+  "Function used to read a string from minibuffer with completions.
+It should accept the same arguments as `completing-read'.")
 
 (defvar imenus-actions
   '((isearch . imenus-isearch)
@@ -283,9 +287,9 @@ if this string does not match any item."
     (or imenu-eager-completion-buffer
         (add-hook 'minibuffer-setup-hook 'minibuffer-completion-help))
     (add-hook 'minibuffer-setup-hook 'imenus-minibuffer-setup)
-    (let* ((input (completing-read prompt index
-                                   nil nil initial-input
-                                   'imenu--history-list name))
+    (let* ((input (funcall imenus-completing-read-function
+                           prompt index nil nil initial-input
+                           'imenu--history-list name))
            (item (assoc input index)))
       (if (or imenus-exit-status (null item))
           input
