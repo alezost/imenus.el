@@ -1,6 +1,6 @@
 ;;; imenus.el --- Imenu for multiple buffers and without subgroups
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2018, 2020 Alex Kost
 
 ;; Author: Alex Kost <alezost@gmail.com>
 ;; Created: 19 Dec 2014
@@ -80,6 +80,14 @@ subsection name and a buffer where the item come from."
 (defcustom imenus-delimiter "|"
   "String used to separate parts of an index item name."
   :type 'string
+  :group 'imenus)
+
+(defcustom imenus-inherit-input-method t
+  "If non-nil, inherit the input method from the current buffer.
+This value is passed as the last argument to
+`imenus-completing-read-function'.  See `completing-read' for
+details."
+  :type 'boolean
   :group 'imenus)
 
 (defvar imenus-completing-read-function completing-read-function
@@ -289,7 +297,8 @@ if this string does not match any item."
     (add-hook 'minibuffer-setup-hook 'imenus-minibuffer-setup)
     (let* ((input (funcall imenus-completing-read-function
                            prompt index nil nil initial-input
-                           'imenu--history-list name))
+                           'imenu--history-list name
+                           imenus-inherit-input-method))
            (item (assoc input index)))
       (if (or imenus-exit-status (null item))
           input
