@@ -1,6 +1,6 @@
-[[http://www.gnu.org/licenses/gpl-3.0.txt][file:https://img.shields.io/badge/license-GPL_3-orange.svg]]
-[[http://melpa.org/#/imenus][file:http://melpa.org/packages/imenus-badge.svg]]
-[[http://stable.melpa.org/#/imenus][file:http://stable.melpa.org/packages/imenus-badge.svg]]
+[[https://www.gnu.org/licenses/gpl-3.0.txt][file:https://img.shields.io/badge/license-GPL_3-orange.svg]]
+[[https://melpa.org/#/imenus][file:https://melpa.org/packages/imenus-badge.svg]]
+[[https://stable.melpa.org/#/imenus][file:https://stable.melpa.org/packages/imenus-badge.svg]]
 
 ** About
 
@@ -14,7 +14,7 @@ specified buffers by pressing an according key binding.
 
 *** Automatic
 
-This package can be installed from [[http://melpa.org/][MELPA]] (with =M-x package-install= or
+This package can be installed from [[https://melpa.org/][MELPA]] (with =M-x package-install= or
 =M-x list-packages=).
 
 *** Manual
@@ -51,9 +51,9 @@ For the manual installation, clone the repo, add the directory to
     a group prefix (i.e., "Variables ⇨ imenus-delimiter").  The
     difference is shown in the following screenshots:
 
-    | Imenu                               | Imenus                              |
-    |-------------------------------------+-------------------------------------|
-    | [[http://i.imgur.com/mVG7uOI.png][file:http://i.imgur.com/mVG7uOI.png]] | [[http://i.imgur.com/3fAZetY.png][file:http://i.imgur.com/3fAZetY.png]] |
+    | Imenu                                | Imenus                               |
+    |--------------------------------------+--------------------------------------|
+    | [[https://i.imgur.com/mVG7uOI.png][file:https://i.imgur.com/mVG7uOI.png]] | [[https://i.imgur.com/3fAZetY.png][file:https://i.imgur.com/3fAZetY.png]] |
 
 - =M-x imenus-mode-buffers=
 
