@@ -57,6 +57,16 @@
   "Easy jumping to buffers places."
   :group 'convenience)
 
+(defgroup imenus-faces nil
+  "Imenus faces."
+  :group 'imenus
+  :group 'faces)
+
+(defface imenus-section-face
+  '((t :inherit font-lock-comment-face))
+  "Face used for titles of sections."
+  :group 'imenus-faces)
+
 (defcustom imenus-sort-function nil
   "Function used to sort imenus items.
 The function should take 2 arguments and return t if the first
@@ -172,7 +182,8 @@ Make this command return the current user input."
 (defun imenus-item-name-default (item-name &optional section _buffer)
   "Concatenate SECTION and ITEM-NAME with `imenus-delimiter'."
   (if section
-      (concat section imenus-delimiter item-name)
+      (concat (propertize section 'face 'imenus-section-face)
+              imenus-delimiter item-name)
     item-name))
 
 (defun imenus-item-name-full (item-name section buffer)
